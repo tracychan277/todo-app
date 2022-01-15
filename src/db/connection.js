@@ -1,3 +1,4 @@
+// Reference: https://www.mongodb.com/languages/mern-stack-tutorial
 const { MongoClient } = require('mongodb');
 const db = process.env.ATLAS_URI;
 const client = new MongoClient(db, {
@@ -12,7 +13,7 @@ module.exports = {
     client.connect(function(err, db) {
       // Verify that we have a proper DB object
       if (db) {
-        _db = db.db('myFirstDatabase');
+        _db = db.db('todo-app');
         console.log("Successfully connected to MongoDB.");
       }
       return callback(err);
