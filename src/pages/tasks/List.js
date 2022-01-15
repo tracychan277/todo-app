@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getHumanFriendlyDateString } from '../../dateUtils';
 
 const Task = (props) => {
   let taskClass = null;
@@ -19,7 +20,9 @@ const Task = (props) => {
         />
       </td>
       <td className="description">{props.task.description}</td>
-      <td className="due-date">{props.task.dueDate}</td>
+      <td className="due-date">
+        {getHumanFriendlyDateString(props.task.dueDate)}
+      </td>
       <td>
         <button
           className="delete"
