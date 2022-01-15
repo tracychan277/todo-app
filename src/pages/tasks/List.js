@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const Task = (props) => (
-  <tr>
+  <tr style={Date.parse(props.task.dueDate) <= new Date() ? {color: 'red'} : {}}>
     <td>
       <input
         type="checkbox"
