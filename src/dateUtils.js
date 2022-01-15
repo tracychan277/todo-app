@@ -30,9 +30,9 @@ export function getHumanFriendlyDateString(iso8601_date_string) {
   // We have to compare the *formatted* dates rather than the actual dates --
   // for example, if the UTC date and the localised date fall on either side
   // of midnight.
-  if (dateFormatter.format(date) == dateFormatter.format(today)) {
+  if (dateFormatter.format(date) === dateFormatter.format(today)) {
     return "Today at " + timeFormatter.format(date);
-  } else if (dateFormatter.format(date) == dateFormatter.format(tomorrow)) {
+  } else if (dateFormatter.format(date) === dateFormatter.format(tomorrow)) {
     return "Tomorrow at " + timeFormatter.format(date);
   } else {
     return dateFormatter.format(date) + " " + timeFormatter.format(date);

@@ -68,7 +68,7 @@ export default function TaskList() {
 
       // Update the state so we can re-render a completed item's styles
       const updatedTasks = tasks.map(existingTask => {
-        if (existingTask._id == task._id){
+        if (existingTask._id === task._id){
           return {...existingTask, completed: task.completed};
         }
         return existingTask;

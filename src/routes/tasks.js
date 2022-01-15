@@ -20,9 +20,11 @@ function handleError(error, result, response, logMessage=null) {
 // Get all the tasks available
 routes.route('/tasks').get(function(request, response) {
   const dbConnection = dbo.getDb();
+  const order = { dueDate: 1 };
   dbConnection
     .collection('tasks')
     .find({})
+    .sort(order)
     .toArray((error, result) => handleError(error, result, response));
 });
 
