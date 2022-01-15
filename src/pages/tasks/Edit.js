@@ -16,73 +16,73 @@ export default function Edit() {
       const id = params.id.toString();
       const response = await fetch(`http://localhost:5000/task/${params.id.toString()}`);
 
-        if (!response.ok) {
-          const message = `An error has occurred: ${response.statusText}`;
-          window.alert(message);
-          return;
-        }
-
-        const record = await response.json();
-        if (!record) {
-          window.alert(`Task with id ${id} not found`);
-          navigate("/");
-          return;
-        }
-
-        setForm(record);
+      if (!response.ok) {
+        const message = `An error has occurred: ${response.statusText}`;
+        window.alert(message);
+        return;
       }
 
-      fetchData();
+      const record = await response.json();
+      if (!record) {
+        window.alert(`Task with id ${id} not found`);
+        navigate("/");
+        return;
+      }
 
-      return;
-    }, [params.id, navigate]);
-
-    // These methods will update the state properties.
-    function updateForm(value) {
-      return setForm((prev) => {
-        return { ...prev, ...value };
-      });
+      setForm(record);
     }
 
-    async function onSubmit(e) {
-      e.preventDefault();
-      const editedTask = {
-        description: form.description,
-        dueDate: form.dueDate,
-        userName: "tracy",
-      };
+    fetchData();
 
-      await fetch(`http://localhost:5000/update/${params.id}`, {
-        method: "POST",
-        body: JSON.stringify(editedTask),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
+    return;
+  }, [params.id, navigate]);
 
-      navigate("/");
-    }
+  // These methods will update the state properties.
+  function updateForm(value) {
+    return setForm((prev) => {
+      return { ...prev, ...value };
+    });
+  }
 
-    return (
-      <div>
-        <h3>Update Record</h3>
-        <form onSubmit={onSubmit}>
-          <label htmlFor="description">Description: </label>
-          <input
-            type="text"
-            id="description"
-            value={form.description}
-            onChange={(e) => updateForm({ description: e.target.value })}
-          />
-          <label htmlFor="dueDate">Due Date: </label>
-          <input
-            type="datetime-local"
-            id="dueDate"
-            value={form.dueDate}
-            onChange={(e) => updateForm({ dueDate: e.target.value })}
-          />
-          <input type="submit" value="Update Task" />
-        </form>
-      </div>
-    );
+  async function onSubmit(e) {
+    e.preventDefault();
+    const editedTask = {
+      description: form.description,
+      dueDate: form.dueDate,
+      userName: "tracy",
+    };
+
+    await fetch(`http://localhost:5000/update/${params.id}`, {
+      method: "POST",
+      body: JSON.stringify(editedTask),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    navigate("/");
+  }
+
+  return (
+    <div>
+      <h3>Update Record</h3>
+      <form onSubmit={onSubmit}>
+        <label htmlFor="description">Description: </label>
+        <input
+          type="text"
+          id="description"
+          value={form.description}
+          onChange={(e) => updateForm({ description: e.target.value })}
+        />
+        <label htmlFor="dueDate">Due Date: </label>
+        <input
+          type="datetime-local"
+          id="dueDate"
+          value={form.dueDate}
+          onChange={(e) => updateForm({ dueDate: e.target.value })}
+        />
+        <input type="submit" value="Update Task" />
+      </form>
+    </div>
+  );
 }
