@@ -42,6 +42,7 @@ routes.route('/task/add').post(function(request, response) {
     description: request.body.description,
     dueDate: request.body.dueDate,
     userName: request.body.userName,
+    completed: request.body.completed,
   };
   dbConnection.collection('tasks').insertOne(
     newTask, (error, result) => handleError(error, result, response)
@@ -57,6 +58,7 @@ routes.route('/update/:id').post(function(request, response) {
       description: request.body.description,
       dueDate: request.body.dueDate,
       userName: request.body.userName,
+      completed: request.body.completed,
     },
   };
   dbConnection
@@ -71,7 +73,7 @@ routes.route("/:id").delete((request, response) => {
   const dbConnection = dbo.getDb();
   const idQuery = { _id: ObjectId( request.params.id )};
   dbConnection.collection('tasks').deleteOne(idQuery, (error, result) => {
-    handleError(error, result, response, "1 task deleted"));
+    handleError(error, result, response, "1 task deleted");
   });
 });
 

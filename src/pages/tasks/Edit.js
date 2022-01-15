@@ -22,14 +22,14 @@ export default function Edit() {
         return;
       }
 
-      const record = await response.json();
-      if (!record) {
+      const task = await response.json();
+      if (!task) {
         window.alert(`Task with id ${id} not found`);
         navigate("/");
         return;
       }
 
-      setForm(record);
+      setForm(task);
     }
 
     fetchData();
@@ -65,7 +65,7 @@ export default function Edit() {
 
   return (
     <div>
-      <h3>Update Record</h3>
+      <h3>Update Task</h3>
       <form onSubmit={onSubmit}>
         <label htmlFor="description">Description: </label>
         <input

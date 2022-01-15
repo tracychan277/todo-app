@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 const Task = (props) => (
   <tr>
+    <td>
+      <input
+        type="checkbox"
+        id="completed"
+        defaultChecked={props.task.completed}
+        onChange={() => props.toggleCompleted(props.task)}
+      />
+    </td>
     <td>{props.task.description}</td>
     <td>{props.task.dueDate}</td>
     <td>
@@ -34,6 +42,17 @@ export default function TaskList() {
       return;
     }, [tasks.length]);
 
+    async function toggleCompleted(task) {
+      task.completed = !task.completed;
+      await fetch(`http://localhost:5000/update/${task._id}`, {
+        method: "POST",
+        body: JSON.stringify(task),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+    }
+
     async function deleteTask(id) {
       await fetch(`http://localhost:5000/${id}`, {method: "DELETE"});
 
@@ -47,6 +66,7 @@ export default function TaskList() {
           <Task
             task={task}
             deleteTask={() => deleteTask(task._id)}
+            toggleCompleted={() => toggleCompleted(task)}
             key={task._id}
           />
         );
@@ -60,6 +80,7 @@ export default function TaskList() {
         <table>
           <thead>
             <tr>
+              <th></th>
               <th>Description</th>
               <th>Due Date</th>
               <th>Actions</th>
