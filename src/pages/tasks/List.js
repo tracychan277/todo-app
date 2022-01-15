@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react';
 
-const Task = (props) => (
-  <tr className={props.task.completed ? 'completed' : null}
-    style={Date.parse(props.task.dueDate) <= new Date() ? {color: 'red'} : {}}>
-    <td>
-      <input
-        type="checkbox"
-        id="completed"
-        defaultChecked={props.task.completed}
-        onChange={() => props.toggleCompleted(props.task)}
-      />
-    </td>
-    <td className="description">{props.task.description}</td>
-    <td>{props.task.dueDate}</td>
-    <td>
-      <a href={`/edit/${props.task._id}`}>Edit</a> |
-      <button onClick={() => {props.deleteTask(props.task._id);}}>Delete</button>
-    </td>
-  </tr>
-);
+const Task = (props) => {
+  let taskClass = null;
+  if (props.task.completed) {
+    taskClass = 'completed';
+  } else if (Date.parse(props.task.dueDate) <= new Date()) {
+    taskClass = 'overdue';
+  }
+  return (
+    <tr className={taskClass}>
+      <td>
+        <input
+          type="checkbox"
+          id="completed"
+          defaultChecked={props.task.completed}
+          onChange={() => props.toggleCompleted(props.task)}
+        />
+      </td>
+      <td className="description">{props.task.description}</td>
+      <td className="due-date">{props.task.dueDate}</td>
+      <td>
+        <a href={`/edit/${props.task._id}`}>Edit</a> |
+        <button onClick={() => {props.deleteTask(props.task._id);}}>Delete</button>
+      </td>
+    </tr>
+  );
+};
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);

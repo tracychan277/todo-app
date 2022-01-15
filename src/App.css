@@ -1,3 +1,8 @@
 .completed .description {
   text-decoration: line-through;
 }
+
+.overdue .description, .overdue .due-date {
+  color: red;
+  font-weight: bold;
+}
