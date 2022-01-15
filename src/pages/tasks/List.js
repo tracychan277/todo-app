@@ -21,8 +21,10 @@ const Task = (props) => {
       <td className="description">{props.task.description}</td>
       <td className="due-date">{props.task.dueDate}</td>
       <td>
-        <Link to={`/edit/${props.task._id}`}>Edit</Link> |
-        <button onClick={() => {props.deleteTask(props.task._id);}}>Delete</button>
+        <button
+          className="delete"
+          title="Delete"
+          onClick={() => {props.deleteTask(props.task._id);}}>&times;</button>
       </td>
     </tr>
   );

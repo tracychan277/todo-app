@@ -20,3 +20,13 @@
 th {
   text-align: left;
 }
+
+.delete {
+  font-weight: bold;
+  font-size: 1.5em;
+  border: none;
+}
+
+.delete:hover {
+  cursor: pointer;
+}
