@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
 const Task = (props) => (
-  <li>
-    <ul>
-      <li>{props.task.description}</li>
-      <li>{props.task.dueDate}</li>
-      <li>
+  <tr>
+    <td>{props.task.description}</td>
+    <td>{props.task.dueDate}</td>
+    <td>
       <a href={`/edit/${props.task._id}`}>Edit</a> |
       <button onClick={() => {props.deleteTask(props.task._id);}}>Delete</button>
-      </li>
-    </ul>
-  </li>
+    </td>
+  </tr>
 );
 
 export default function TaskList() {
@@ -56,6 +54,19 @@ export default function TaskList() {
     }
 
     return (
-      <ul>{taskList()}</ul>
+      <div>
+        <h3>To-Do List</h3>
+        <a href="/add">Add Task</a>
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Due Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>{taskList()}</tbody>
+        </table>
+      </div>
     );
 }
