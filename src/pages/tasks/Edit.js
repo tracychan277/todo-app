@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function Edit() {
   const [form, setForm] = useState({
@@ -66,7 +67,8 @@ export default function Edit() {
 
   return (
     <div className="container">
-      <h3>Update Task</h3>
+      <Link to="/">&lt; Tasks List</Link>
+      <h1>Update Task</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="description">Description: </label>
         <input

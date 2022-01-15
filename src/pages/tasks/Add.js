@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function Add() {
   const [form, setForm] = useState({
@@ -46,7 +47,8 @@ export default function Add() {
   // This following section will display the form that takes the input from the user.
   return (
     <div className="container">
-      <h1>Create New Record</h1>
+      <Link to="/">&lt; Tasks List</Link>
+      <h1>Add New Task</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="description">Description</label>
         <input type="text"

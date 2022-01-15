@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Task = (props) => {
   let taskClass = null;
@@ -20,7 +21,7 @@ const Task = (props) => {
       <td className="description">{props.task.description}</td>
       <td className="due-date">{props.task.dueDate}</td>
       <td>
-        <a href={`/edit/${props.task._id}`}>Edit</a> |
+        <Link to={`/edit/${props.task._id}`}>Edit</Link> |
         <button onClick={() => {props.deleteTask(props.task._id);}}>Delete</button>
       </td>
     </tr>
@@ -93,7 +94,7 @@ export default function TaskList() {
     return (
       <div className="container">
         <h1>To-Do List</h1>
-        <a href="/add">Add Task</a>
+        <Link to="/add">Add Task</Link>
         <table>
           <thead>
             <tr>
