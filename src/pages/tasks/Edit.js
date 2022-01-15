@@ -76,7 +76,7 @@ export default function Edit() {
           />
           <label htmlFor="dueDate">Due Date: </label>
           <input
-            type="date"
+            type="datetime-local"
             id="dueDate"
             value={form.dueDate}
             onChange={(e) => updateForm({ dueDate: e.target.value })}
