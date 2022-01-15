@@ -7,7 +7,6 @@ export default function Edit() {
     dueDate: "",
     userName: "tracy",
     completed: false,
-    tasks: [],
   });
   const params = useParams();
   const navigate = useNavigate();

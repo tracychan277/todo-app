@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 const Task = (props) => (
-  <tr style={Date.parse(props.task.dueDate) <= new Date() ? {color: 'red'} : {}}>
+  <tr className={props.task.completed ? 'completed' : null}
+    style={Date.parse(props.task.dueDate) <= new Date() ? {color: 'red'} : {}}>
     <td>
       <input
         type="checkbox"
@@ -10,7 +11,7 @@ const Task = (props) => (
         onChange={() => props.toggleCompleted(props.task)}
       />
     </td>
-    <td>{props.task.description}</td>
+    <td className="description">{props.task.description}</td>
     <td>{props.task.dueDate}</td>
     <td>
       <a href={`/edit/${props.task._id}`}>Edit</a> |
@@ -51,6 +52,15 @@ export default function TaskList() {
           'Content-Type': 'application/json'
         },
       });
+
+      // Update the state so we can re-render a completed item's styles
+      const updatedTasks = tasks.map(existingTask => {
+        if (existingTask._id == task._id){
+          return {...existingTask, completed: task.completed};
+        }
+        return existingTask;
+      });
+      setTasks(updatedTasks);
     }
 
     async function deleteTask(id) {
