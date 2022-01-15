@@ -6,6 +6,7 @@ export default function Edit() {
     description: "",
     dueDate: "",
     userName: "tracy",
+    completed: false,
     tasks: [],
   });
   const params = useParams();
@@ -50,6 +51,7 @@ export default function Edit() {
       description: form.description,
       dueDate: form.dueDate,
       userName: "tracy",
+      completed: form.completed,
     };
 
     await fetch(`http://localhost:5000/update/${params.id}`, {
