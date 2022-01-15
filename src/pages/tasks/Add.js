@@ -6,6 +6,7 @@ export default function Add() {
     description: "",
     dueDate: "",
     userName: "tracy",
+    completed: false,
   });
   const navigate = useNavigate();
 
@@ -33,7 +34,12 @@ export default function Add() {
       return;
     });
 
-    setForm({ description: "", dueDate: "", userName: "tracy" });
+    setForm({
+      description: "",
+      dueDate: "",
+      userName: "tracy",
+      completed: false,
+    });
     navigate("/");
   }
 
