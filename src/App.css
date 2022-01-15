@@ -1,3 +1,13 @@
+.container {
+  width: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.completed {
+  color: gray;
+}
+
 .completed .description {
   text-decoration: line-through;
 }
@@ -5,4 +15,8 @@
 .overdue .description, .overdue .due-date {
   color: red;
   font-weight: bold;
+}
+
+th {
+  text-align: left;
 }

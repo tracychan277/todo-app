@@ -45,8 +45,8 @@ export default function Add() {
 
   // This following section will display the form that takes the input from the user.
   return (
-    <div>
-      <h3>Create New Record</h3>
+    <div className="container">
+      <h1>Create New Record</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="description">Description</label>
         <input type="text"

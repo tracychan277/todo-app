@@ -91,8 +91,8 @@ export default function TaskList() {
     }
 
     return (
-      <div>
-        <h3>To-Do List</h3>
+      <div className="container">
+        <h1>To-Do List</h1>
         <a href="/add">Add Task</a>
         <table>
           <thead>
@@ -100,7 +100,7 @@ export default function TaskList() {
               <th></th>
               <th>Description</th>
               <th>Due Date</th>
-              <th>Actions</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{taskList()}</tbody>
