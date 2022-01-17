@@ -49,68 +49,69 @@ export default function TaskList() {
 
         const tasks = await response.json();
         setTasks(tasks);
+    }
+
+    getTasks();
+
+    return;
+  }, [tasks.length]);
+
+  async function toggleCompleted(task) {
+    task.completed = !task.completed;
+    await fetch(`${API_ENDPOINT}/update/${task._id}`, {
+      method: "POST",
+      body: JSON.stringify(task),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    // Update the state so we can re-render a completed item's styles
+    const updatedTasks = tasks.map(existingTask => {
+      if (existingTask._id === task._id){
+        return {...existingTask, completed: task.completed};
       }
+      return existingTask;
+    });
+    setTasks(updatedTasks);
+  }
 
-      getTasks();
+  async function deleteTask(id) {
+    await fetch(`${API_ENDPOINT}/${id}`, {method: "DELETE"});
 
-      return;
-    }, [tasks.length]);
+    const newTasks = tasks.filter((el) => el._id !== id);
+    setTasks(newTasks);
+  }
 
-    async function toggleCompleted(task) {
-      task.completed = !task.completed;
-      await fetch(`http://localhost:5000/update/${task._id}`, {
-        method: "POST",
-        body: JSON.stringify(task),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
+  function taskList() {
+    return tasks.map((task) => {
+      return (
+        <Task
+          task={task}
+          deleteTask={() => deleteTask(task._id)}
+          toggleCompleted={() => toggleCompleted(task)}
+          key={task._id}
+        />
+      );
+    });
+  }
 
-      // Update the state so we can re-render a completed item's styles
-      const updatedTasks = tasks.map(existingTask => {
-        if (existingTask._id === task._id){
-          return {...existingTask, completed: task.completed};
-        }
-        return existingTask;
-      });
-      setTasks(updatedTasks);
-    }
-
-    async function deleteTask(id) {
-      await fetch(`http://localhost:5000/${id}`, {method: "DELETE"});
-
-      const newTasks = tasks.filter((el) => el._id !== id);
-      setTasks(newTasks);
-    }
-
-    function taskList() {
-      return tasks.map((task) => {
-        return (
-          <Task
-            task={task}
-            deleteTask={() => deleteTask(task._id)}
-            toggleCompleted={() => toggleCompleted(task)}
-            key={task._id}
-          />
-        );
-      });
-    }
-
-    return (
-      <div className="container">
-        <h1>To-Do List</h1>
-        <Link to="/add">Add Task</Link>
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Description</th>
-              <th>Due Date</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{taskList()}</tbody>
-        </table>
-      </div>
-    );
+  return (
+    <div className="container">
+      <h1>To-Do List</h1>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>{taskList()}</tbody>
+      </table>
+      <br />
+      <Link to="/add">+ Add Task</Link>
+    </div>
+  );
 }

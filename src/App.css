@@ -14,11 +14,6 @@
 
 .overdue .description, .overdue .due-date {
   color: red;
-  font-weight: bold;
-}
-
-th {
-  text-align: left;
 }
 
 .delete {
@@ -29,4 +24,16 @@ th {
 
 .delete:hover {
   cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}
+
+label {
+  font-weight: bold;
 }

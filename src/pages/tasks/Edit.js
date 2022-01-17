@@ -67,25 +67,30 @@ export default function Edit() {
 
   return (
     <div className="container">
-      <Link to="/">&lt; Tasks List</Link>
       <h1>Update Task</h1>
       <form onSubmit={onSubmit}>
-        <label htmlFor="description">Description: </label>
-        <input
-          type="text"
-          id="description"
-          value={form.description}
-          onChange={(e) => updateForm({ description: e.target.value })}
-        />
-        <label htmlFor="dueDate">Due Date: </label>
-        <input
-          type="datetime-local"
-          id="dueDate"
-          value={form.dueDate}
-          onChange={(e) => updateForm({ dueDate: e.target.value })}
-        />
+        <div>
+          <label htmlFor="description">Description: </label>
+          <input
+            type="text"
+            id="description"
+            value={form.description}
+            onChange={(e) => updateForm({ description: e.target.value })}
+          />
+        </div>
+        <div>
+          <label htmlFor="dueDate">Due Date: </label>
+          <input
+            type="datetime-local"
+            id="dueDate"
+            value={form.dueDate}
+            onChange={(e) => updateForm({ dueDate: e.target.value })}
+          />
+        </div>
         <input type="submit" value="Update Task" />
       </form>
+      <br />
+      <Link to="/">&lt; Tasks List</Link>
     </div>
   );
 }
