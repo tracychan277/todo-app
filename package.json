@@ -64,7 +64,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "deploy": "aws s3 sync build/ s3://tracy-chan-code --exclude .DS_Store --cache-control max-age=604800 --delete"
   },
   "eslintConfig": {
     "extends": [
