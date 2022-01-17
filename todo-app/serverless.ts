@@ -5,7 +5,11 @@ import tasks from '@functions/tasks';
 const serverlessConfiguration: AWS = {
   service: 'todo-app',
   frameworkVersion: '2',
-  plugins: ['serverless-esbuild', 'serverless-dotenv-plugin'],
+  plugins: [
+    'serverless-esbuild',
+    'serverless-dotenv-plugin',
+    'serverless-s3-sync',
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
