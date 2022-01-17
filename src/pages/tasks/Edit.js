@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { API_ENDPOINT } from '../../util';
 
 export default function Edit() {
   const [form, setForm] = useState({
@@ -15,7 +16,7 @@ export default function Edit() {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
-      const response = await fetch(`http://localhost:5000/task/${params.id.toString()}`);
+      const response = await fetch(`${API_ENDPOINT}/task/${params.id.toString()}`);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -54,7 +55,7 @@ export default function Edit() {
       completed: form.completed,
     };
 
-    await fetch(`http://localhost:5000/update/${params.id}`, {
+    await fetch(`${API_ENDPOINT}/task/update/${params.id}`, {
       method: "POST",
       body: JSON.stringify(editedTask),
       headers: {

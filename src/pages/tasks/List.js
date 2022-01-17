@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
-
-const API_ENDPOINT = 'https://09egrpwm13.execute-api.ap-southeast-2.amazonaws.com/dev';
+import { API_ENDPOINT } from '../../util';
 
 const Task = (props) => {
   let taskClass = null;
@@ -60,7 +59,7 @@ export default function TaskList() {
 
   async function toggleCompleted(task) {
     task.completed = !task.completed;
-    await fetch(`${API_ENDPOINT}/update/${task._id}`, {
+    await fetch(`${API_ENDPOINT}/task/update/${task._id}`, {
       method: "POST",
       body: JSON.stringify(task),
       headers: {
@@ -79,7 +78,7 @@ export default function TaskList() {
   }
 
   async function deleteTask(id) {
-    await fetch(`${API_ENDPOINT}/${id}`, {method: "DELETE"});
+    await fetch(`${API_ENDPOINT}/task/delete/${id}`, {method: "DELETE"});
 
     const newTasks = tasks.filter((el) => el._id !== id);
     setTasks(newTasks);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { API_ENDPOINT } from '../../util';
 
 export default function Add() {
   const [form, setForm] = useState({
@@ -23,7 +24,7 @@ export default function Add() {
 
     const newTask = { ...form };
 
-    await fetch("http://localhost:5000/task/add", {
+    await fetch(`${API_ENDPOINT}/task/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
