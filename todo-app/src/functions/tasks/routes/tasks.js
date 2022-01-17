@@ -40,7 +40,7 @@ routes.route('/task/:id').get(async function(request, response) {
 });
 
 // Create a new task
-routes.route('task/add').post(async function(request, response) {
+routes.route('/task/add').post(async function(request, response) {
   const client = await clientPromise;
   const dbConnection = client.db();
   const newTask = {
@@ -75,7 +75,7 @@ routes.route('/task/update/:id').post(async function(request, response) {
 });
 
 // Delete a task
-routes.route("/task/:id").delete(async function(request, response) {
+routes.route("/task/delete/:id").delete(async function(request, response) {
   const client = await clientPromise;
   const dbConnection = client.db();
   const idQuery = { _id: ObjectId( request.params.id )};

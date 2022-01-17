@@ -9,7 +9,39 @@ export default {
         path: 'tasks',
         // private: true,
         cors: true,
+      },
+    },
+    {
+      http: {
+        method: 'get',
+        path: 'task/{id}',
+        // private: true,
+        cors: true,
       }
-    }
+    },
+    {
+      http: {
+        method: 'post',
+        path: 'task/add',
+        // private: true,
+        cors: true,
+      }
+    },
+    {
+      http: {
+        method: 'post',
+        path: 'task/update/{id}',
+        // private: true,
+        cors: true,
+      }
+    },
+    {
+      http: {
+        method: 'delete',
+        path: 'task/delete/{id}',
+        // private: true,
+        cors: true,
+      }
+    },
   ]
 }
