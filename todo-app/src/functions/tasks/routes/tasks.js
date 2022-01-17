@@ -1,7 +1,7 @@
 // Reference: https://www.mongodb.com/languages/mern-stack-tutorial
 const express = require('express');
 const routes = express.Router();
-const dbo = require('../db/connection');
+const clientPromise = require('../db/connection');
 
 // This helps convert the ID from string to ObjectId for the MongoDB _id.
 const ObjectId = require('mongodb').ObjectId;
@@ -18,8 +18,9 @@ function handleError(error, result, response, logMessage=null) {
 }
 
 // Get all the tasks available
-routes.route('/tasks').get(function(request, response) {
-  const dbConnection = dbo.getDb();
+routes.route('/tasks').get(async function(request, response) {
+  const client = await clientPromise;
+  const dbConnection = client.db();
   const order = { dueDate: 1 };
   dbConnection
     .collection('tasks')
@@ -29,8 +30,9 @@ routes.route('/tasks').get(function(request, response) {
 });
 
 // Retrieve a single task by ID
-routes.route('/task/:id').get(function(request, response) {
-  const dbConnection = dbo.getDb();
+routes.route('/task/:id').get(async function(request, response) {
+  const client = await clientPromise;
+  const dbConnection = client.db();
   const idQuery = { _id: ObjectId( request.params.id )};
   dbConnection
       .collection('tasks')
@@ -38,8 +40,9 @@ routes.route('/task/:id').get(function(request, response) {
 });
 
 // Create a new task
-routes.route('/task/add').post(function(request, response) {
-  const dbConnection = dbo.getDb();
+routes.route('task/add').post(async function(request, response) {
+  const client = await clientPromise;
+  const dbConnection = client.db();
   const newTask = {
     description: request.body.description,
     dueDate: request.body.dueDate,
@@ -52,8 +55,9 @@ routes.route('/task/add').post(function(request, response) {
 });
 
 // Update a task
-routes.route('/update/:id').post(function(request, response) {
-  const dbConnection = dbo.getDb();
+routes.route('/task/update/:id').post(async function(request, response) {
+  const client = await clientPromise;
+  const dbConnection = client.db();
   const idQuery = { _id: ObjectId( request.params.id )};
   const updatedTask = {
     $set: {
@@ -71,8 +75,9 @@ routes.route('/update/:id').post(function(request, response) {
 });
 
 // Delete a task
-routes.route("/:id").delete((request, response) => {
-  const dbConnection = dbo.getDb();
+routes.route("/task/:id").delete(async function(request, response) {
+  const client = await clientPromise;
+  const dbConnection = client.db();
   const idQuery = { _id: ObjectId( request.params.id )};
   dbConnection.collection('tasks').deleteOne(idQuery, (error, result) => {
     handleError(error, result, response, "1 task deleted");
