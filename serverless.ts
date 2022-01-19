@@ -67,6 +67,12 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    // s3Sync: [
+    //   {
+    //     bucketName: 'todo-app-tracy',
+    //     localDir: 'react/build/',
+    //   }
+    // ],
   },
 };
 
