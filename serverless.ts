@@ -53,6 +53,59 @@ const serverlessConfiguration: AWS = {
           },
         }
       },
+      CloudFrontDistribution: {
+        Type: 'AWS::CloudFront::Distribution',
+        Properties: {
+          DistributionConfig: {
+            Origins: [
+              {
+                DomainName: '${self:resources.Resources.S3Bucket.Properties.BucketName}.s3.amazonaws.com',
+                // An identifier for the origin which must be unique within the distribution
+                Id: 'Todo App S3',
+                CustomOriginConfig: {
+                  OriginProtocolPolicy: 'https-only',
+                },
+              },
+            ],
+            Enabled: 'true',
+            DefaultRootObject: 'index.html',
+            // Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
+            CustomErrorResponses: [
+              {
+                ErrorCode: 404,
+                ResponseCode: 200,
+                ResponsePagePath: '/index.html',
+              },
+            ],
+            DefaultCacheBehavior: {
+              AllowedMethods: [
+                'DELETE',
+                'GET',
+                'HEAD',
+                'OPTIONS',
+                'PATCH',
+                'POST',
+                'PUT',
+              ],
+              // The origin id defined above
+              TargetOriginId: 'Todo App S3',
+              // Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
+              ForwardedValues: {
+                QueryString: 'false',
+                Cookies: {
+                  Forward: 'none',
+                },
+              },
+              // The protocol that users can use to access the files in the origin. To allow HTTP use `allow-all`
+              ViewerProtocolPolicy: 'redirect-to-https',
+              // The certificate to use when viewers use HTTPS to request objects.
+            },
+            ViewerCertificate: {
+              CloudFrontDefaultCertificate: 'true'
+            },
+          },
+        },
+      },
     },
   },
   package: { individually: true },
