@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import NavBar from './components/NavBar';
 import TaskAdd from './pages/tasks/Add';
@@ -9,6 +10,7 @@ import TaskList from './pages/tasks/List';
 const App = () => {
   return (
     <Router>
+      <CssBaseline />
       <NavBar />
       <Container maxWidth="sm">
         <Routes>
