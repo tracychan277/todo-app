@@ -32,7 +32,7 @@ const serverlessConfiguration: AWS = {
       S3Bucket: {
         Type: 'AWS::S3::Bucket',
         Properties: {
-          AccessControl: 'PublicRead',
+          AccessControl: 'PublicRead', // TODO: Restrict access to the CloudFront distribution
           WebsiteConfiguration: {
             IndexDocument: 'index.html',
           },
@@ -45,6 +45,7 @@ const serverlessConfiguration: AWS = {
           Bucket: '${self:resources.Resources.S3Bucket.Properties.BucketName}',
           PolicyDocument: {
             Statement: {
+              // TODO: Restrict access to the CloudFront distribution
               Action: ['s3:getObject'],
               Effect: 'Allow',
               Resource: 'arn:aws:s3:::todo-app-tracy/*',
