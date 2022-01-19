@@ -1,5 +1,12 @@
 import { handlerPath } from '@libs/handlerResolver';
 
+const cognitoAuthorizer = {
+  type: 'COGNITO_USER_POOLS',
+  authorizerId: {
+    Ref: 'ApiGatewayAuthorizer',
+  },
+};
+
 export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
@@ -7,7 +14,8 @@ export default {
       http: {
         method: 'get',
         path: 'tasks',
-        // private: true,
+        authorizer: cognitoAuthorizer,
+        private: true,
         cors: true,
       },
     },
@@ -15,7 +23,8 @@ export default {
       http: {
         method: 'get',
         path: 'task/{id}',
-        // private: true,
+        authorizer: cognitoAuthorizer,
+        private: true,
         cors: true,
       }
     },
@@ -23,7 +32,8 @@ export default {
       http: {
         method: 'post',
         path: 'task/add',
-        // private: true,
+        authorizer: cognitoAuthorizer,
+        private: true,
         cors: true,
       }
     },
@@ -31,7 +41,8 @@ export default {
       http: {
         method: 'post',
         path: 'task/update/{id}',
-        // private: true,
+        authorizer: cognitoAuthorizer,
+        private: true,
         cors: true,
       }
     },
@@ -39,7 +50,8 @@ export default {
       http: {
         method: 'delete',
         path: 'task/delete/{id}',
-        // private: true,
+        authorizer: cognitoAuthorizer,
+        private: true,
         cors: true,
       }
     },

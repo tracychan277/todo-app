@@ -89,8 +89,8 @@ const serverlessConfiguration: AWS = {
                 'POST',
                 'PUT',
               ],
-              // The origin id defined above
-              TargetOriginId: 'Todo App S3',
+              // The origin ID defined above
+              TargetOriginId: '${self:resources.Resources.CloudFrontDistribution.Properties.DistributionConfig.Origins.0.Id}',
               // Defining if and how the QueryString and Cookies are forwarded to the origin which in this case is S3
               ForwardedValues: {
                 QueryString: 'false',
@@ -134,6 +134,34 @@ const serverlessConfiguration: AWS = {
           UserPoolId: {
             'Ref': 'CognitoUserPool',
           }
+        },
+      },
+      ApiGatewayAuthorizer: {
+        DependsOn: ['ApiGatewayRestApi'],
+        Type: 'AWS::ApiGateway::Authorizer',
+        Properties: {
+          Name: 'todo-app-authorizer',
+          IdentitySource: 'method.request.header.Authorization',
+          RestApiId: {
+            Ref: 'ApiGatewayRestApi',
+          },
+          Type: 'COGNITO_USER_POOLS',
+          ProviderARNs: [
+            {'Fn::GetAtt': ['CognitoUserPool', 'Arn']},
+          ],
+        },
+      },
+      GatewayResponseDefault4XX: {
+        Type: 'AWS::ApiGateway::GatewayResponse',
+        Properties: {
+          ResponseParameters: {
+            'gatewayresponse.header.Access-Control-Allow-Origin': "'*'",
+            'gatewayresponse.header.Access-Control-Allow-Headers': "'*'",
+          },
+          ResponseType: 'DEFAULT_4XX',
+          RestApiId: {
+            Ref: 'ApiGatewayRestApi',
+          },
         },
       },
     },
