@@ -71,7 +71,7 @@ const serverlessConfiguration: AWS = {
             ],
             Enabled: 'true',
             DefaultRootObject: 'index.html',
-            // Since the SPA is taking care of the routing we need to make sure every path is served with index.html
+            // Since the SPA is taking care of the routing we need to make sure every path is served through index.html
             CustomErrorResponses: [
               {
                 ErrorCode: 404,
@@ -100,8 +100,8 @@ const serverlessConfiguration: AWS = {
               },
               // The protocol that users can use to access the files in the origin. To allow HTTP use `allow-all`
               ViewerProtocolPolicy: 'redirect-to-https',
-              // The certificate to use when viewers use HTTPS to request objects.
             },
+            // The certificate to use when viewers use HTTPS to request objects.
             ViewerCertificate: {
               CloudFrontDefaultCertificate: 'true'
             },
