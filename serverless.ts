@@ -8,7 +8,7 @@ const serverlessConfiguration: AWS = {
   plugins: [
     'serverless-esbuild',
     'serverless-dotenv-plugin',
-    // 'serverless-s3-sync',
+    'serverless-single-page-app-plugin',
   ],
   provider: {
     name: 'aws',
@@ -107,6 +107,14 @@ const serverlessConfiguration: AWS = {
         },
       },
     },
+    // In order to print out the hosted domain via `sls domainInfo` we need to define the DomainName output for CloudFormation
+    Outputs: {
+      WebAppCloudFrontDistributionOutput: {
+        Value: {
+          'Fn::GetAtt': [ 'CloudFrontDistribution', 'DomainName' ]
+        },
+      },
+    },
   },
   package: { individually: true },
   custom: {
@@ -120,12 +128,6 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
-    // s3Sync: [
-    //   {
-    //     bucketName: 'todo-app-tracy',
-    //     localDir: 'react/build/',
-    //   }
-    // ],
   },
 };
 
