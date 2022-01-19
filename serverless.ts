@@ -27,6 +27,34 @@ const serverlessConfiguration: AWS = {
   },
   // import the function via paths
   functions: { tasks },
+  resources: {
+    Resources: {
+      S3Bucket: {
+        Type: 'AWS::S3::Bucket',
+        Properties: {
+          AccessControl: 'PublicRead',
+          WebsiteConfiguration: {
+            IndexDocument: 'index.html',
+          },
+          BucketName: 'todo-app-tracy',
+        },
+      },
+      BucketPolicy: {
+        Type: 'AWS::S3::BucketPolicy',
+        Properties: {
+          Bucket: '${self:resources.Resources.S3Bucket.Properties.BucketName}',
+          PolicyDocument: {
+            Statement: {
+              Action: ['s3:getObject'],
+              Effect: 'Allow',
+              Resource: 'arn:aws:s3:::todo-app-tracy/*',
+              Principal: '*',
+            },
+          },
+        }
+      },
+    },
+  },
   package: { individually: true },
   custom: {
     esbuild: {
