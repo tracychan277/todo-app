@@ -98,7 +98,7 @@ export default function TaskList() {
   }
 
   return (
-    <div className="container">
+    <div>
       <h1>To-Do List</h1>
       <table>
         <thead>

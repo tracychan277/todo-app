@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Container from '@mui/material/Container';
 import NavBar from './components/NavBar';
 import TaskAdd from './pages/tasks/Add';
 import TaskEdit from './pages/tasks/Edit';
@@ -9,11 +10,13 @@ const App = () => {
   return (
     <Router>
       <NavBar />
-      <Routes>
-        <Route exact path="/" element={<TaskList />} />
-        <Route path="/add" element={<TaskAdd />} />
-        <Route path="/edit/:id" element={<TaskEdit />} />
-      </Routes>
+      <Container maxWidth="sm">
+        <Routes>
+          <Route exact path="/" element={<TaskList />} />
+          <Route path="/add" element={<TaskAdd />} />
+          <Route path="/edit/:id" element={<TaskEdit />} />
+        </Routes>
+      </Container>
     </Router>
   );
 };

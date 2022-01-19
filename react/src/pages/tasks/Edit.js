@@ -67,7 +67,7 @@ export default function Edit() {
   }
 
   return (
-    <div className="container">
+    <div>
       <h1>Update Task</h1>
       <form onSubmit={onSubmit}>
         <div>
