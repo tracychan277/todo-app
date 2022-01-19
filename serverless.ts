@@ -54,6 +54,7 @@ const serverlessConfiguration: AWS = {
           },
         }
       },
+      // https://github.com/jonathanconway/serverless-single-page-app-plugin
       CloudFrontDistribution: {
         Type: 'AWS::CloudFront::Distribution',
         Properties: {
@@ -70,7 +71,7 @@ const serverlessConfiguration: AWS = {
             ],
             Enabled: 'true',
             DefaultRootObject: 'index.html',
-            // Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
+            // Since the SPA is taking care of the routing we need to make sure every path is served with index.html
             CustomErrorResponses: [
               {
                 ErrorCode: 404,
@@ -105,6 +106,34 @@ const serverlessConfiguration: AWS = {
               CloudFrontDefaultCertificate: 'true'
             },
           },
+        },
+      },
+      // https://medium.com/@Da_vidgf/using-cognito-for-users-management-in-your-serverless-application-1695fec9e225
+      CognitoUserPool: {
+        Type: 'AWS::Cognito::UserPool',
+        Properties: {
+          MfaConfiguration: 'OFF',
+          UserPoolName: 'todo-user-pool',
+          UsernameAttributes: ['email'],
+          Policies: {
+            PasswordPolicy: {
+              MinimumLength: 6,
+              RequireLowercase: 'False',
+              RequireNumbers: 'True',
+              RequireSymbols: 'False',
+              RequireUppercase: 'True',
+            },
+          },
+        },
+      },
+      CognitoUserPoolClient: {
+        Type: 'AWS::Cognito::UserPoolClient',
+        Properties: {
+          ClientName: 'todo-user-pool-client',
+          GenerateSecret: 'False',
+          UserPoolId: {
+            'Ref': 'CognitoUserPool',
+          }
         },
       },
     },
