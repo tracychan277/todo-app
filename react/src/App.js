@@ -2,6 +2,7 @@ import './App.css';
 import Amplify, { Auth } from 'aws-amplify';
 import config from './config';
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
