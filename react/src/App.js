@@ -25,9 +25,9 @@ const App = ({ signOut, user }) => {
       <NavBar signOut={signOut} />
       <Container maxWidth="sm">
         <Routes>
-          <Route exact path="/" element={<TaskList />} />
-          <Route path="/add" element={<TaskAdd />} />
-          <Route path="/edit/:id" element={<TaskEdit />} />
+          <Route exact path="/" element={<TaskList user={user} />} />
+          <Route path="/add" element={<TaskAdd user={user} />} />
+          <Route path="/edit/:id" element={<TaskEdit user={user} />} />
         </Routes>
       </Container>
     </Router>

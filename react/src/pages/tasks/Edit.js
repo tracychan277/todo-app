@@ -3,11 +3,12 @@ import { useParams, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { API_ENDPOINT } from '../../util';
 
-export default function Edit() {
+export default function Edit(props) {
+  const userName = props.user.username;
   const [form, setForm] = useState({
     description: "",
     dueDate: "",
-    userName: "tracy",
+    userName: userName,
     completed: false,
   });
   const params = useParams();
