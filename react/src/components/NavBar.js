@@ -1,6 +1,6 @@
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 
-const NavBar = () => {
+const NavBar = (props) => {
   return (
     <Box sx={{flexGrow: 1}}>
       <AppBar position="static">
@@ -8,6 +8,7 @@ const NavBar = () => {
           <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
             Todo List
           </Typography>
+          <Button color="inherit" onClick={props.signOut}>Sign Out</Button>
         </Toolbar>
       </AppBar>
     </Box>

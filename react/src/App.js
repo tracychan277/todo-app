@@ -1,4 +1,7 @@
 import './App.css';
+import Amplify, { Auth } from 'aws-amplify';
+import config from './config';
+import { withAuthenticator } from '@aws-amplify/ui-react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -7,11 +10,20 @@ import TaskAdd from './pages/tasks/Add';
 import TaskEdit from './pages/tasks/Edit';
 import TaskList from './pages/tasks/List';
 
-const App = () => {
+Amplify.configure({
+  Auth: {
+    mandatorySignIn: true,
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  },
+});
+
+const App = ({ signOut, user }) => {
   return (
     <Router>
       <CssBaseline />
-      <NavBar />
+      <NavBar signOut={signOut} />
       <Container maxWidth="sm">
         <Routes>
           <Route exact path="/" element={<TaskList />} />
@@ -23,4 +35,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);
