@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import config from '../../config';
+import { Box, Button, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function Add({ user }) {
   const { API_ENDPOINT, API_KEY } = config.api;
@@ -53,28 +56,38 @@ export default function Add({ user }) {
   return (
     <div>
       <h1>Add New Task</h1>
-      <form onSubmit={onSubmit}>
+      <Box component="form"
+           sx={{
+             '& .MuiTextField-root': { m: 1, width: '25ch' },
+             '& .MuiButton-root': { m: 1, width: '25ch' },
+           }}
+           onSubmit={onSubmit}
+      >
         <div>
-          <label htmlFor="description">Description</label>
-          <input type="text"
-            id="description"
-            value={form.description}
-            onChange={(e) => updateForm({ description: e.target.value })}
+          <TextField required
+                     focused
+                     id="description"
+                     label="Description"
+                     variant="outlined"
+                     size="small"
+                     value={form.description}
+                     onChange={(e) => updateForm({ description: e.target.value })}
           />
         </div>
         <div>
-          <label htmlFor="dueDate">Due Date</label>
-          <input
-            type="datetime-local"
-            id="dueDate"
-            value={form.dueDate}
-            onChange={(e) => updateForm({ dueDate: e.target.value })}
+          <TextField required
+                     type="datetime-local"
+                     id="dueDate"
+                     variant="outlined"
+                     size="small"
+                     value={form.dueDate}
+                     onChange={(e) => updateForm({ dueDate: e.target.value })}
           />
         </div>
-        <input type="submit" value="Add" />
-      </form>
+        <Button type="submit" variant="contained" startIcon={<AddIcon />}>Add</Button>
+      </Box>
       <br />
-      <Link to="/">&lt; Tasks List</Link>
+      <Button component={Link} to="/" variant="outlined" startIcon={<ArrowBackIcon />}>Back to Tasks List</Button>
     </div>
   );
 }

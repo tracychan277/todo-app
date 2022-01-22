@@ -2,11 +2,16 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import config from '../../config';
+import Loader from '../../components/Loader';
+import { Box, Button, TextField } from "@mui/material";
+import SaveIcon from '@mui/icons-material/Save';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function Edit({ user }) {
   const { API_ENDPOINT, API_KEY } = config.api;
   const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
   const userName = user.username;
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     description: "",
     dueDate: "",
@@ -42,7 +47,7 @@ export default function Edit({ user }) {
       setForm(task);
     }
 
-    fetchData();
+    fetchData().then(() => setLoading(false));
   }, [params.id, navigate]);
 
   // These methods will update the state properties.
@@ -74,32 +79,41 @@ export default function Edit({ user }) {
     navigate('/');
   }
 
-  return (
+  return loading ? <Loader /> : (
     <div>
       <h1>Update Task</h1>
-      <form onSubmit={onSubmit}>
+      <Box component="form"
+           sx={{
+             '& .MuiTextField-root': { m: 1, width: '25ch' },
+             '& .MuiButton-root': { m: 1, width: '25ch' },
+           }}
+           onSubmit={onSubmit}
+      >
         <div>
-          <label htmlFor="description">Description: </label>
-          <input
-            type="text"
-            id="description"
-            value={form.description}
-            onChange={(e) => updateForm({ description: e.target.value })}
+          <TextField required
+                     focused
+                     id="description"
+                     label="Description"
+                     variant="outlined"
+                     size="small"
+                     value={form.description}
+                     onChange={(e) => updateForm({ description: e.target.value })}
           />
         </div>
         <div>
-          <label htmlFor="dueDate">Due Date: </label>
-          <input
-            type="datetime-local"
-            id="dueDate"
-            value={form.dueDate}
-            onChange={(e) => updateForm({ dueDate: e.target.value })}
+          <TextField required
+                     type="datetime-local"
+                     id="dueDate"
+                     variant="outlined"
+                     size="small"
+                     value={form.dueDate}
+                     onChange={(e) => updateForm({ dueDate: e.target.value })}
           />
         </div>
-        <input type="submit" value="Update Task" />
-      </form>
+        <Button type="submit" variant="contained" startIcon={<SaveIcon />}>Update</Button>
+      </Box>
       <br />
-      <Link to="/">&lt; Tasks List</Link>
+      <Button component={Link} to="/" variant="outlined" startIcon={<ArrowBackIcon />}>Back to Tasks List</Button>
     </div>
   );
 }

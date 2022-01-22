@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
 import config from '../../config';
+import Loader from '../../components/Loader';
+import { Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from "@mui/icons-material/Add";
 
 const Task = ({ task, deleteTask, toggleCompleted }) => {
   let taskClass = null;
@@ -11,32 +16,27 @@ const Task = ({ task, deleteTask, toggleCompleted }) => {
     taskClass = 'overdue';
   }
   return (
-    <tr className={taskClass}>
-      <td>
-        <input
-          type="checkbox"
-          id="completed"
-          defaultChecked={task.completed}
-          onChange={() => toggleCompleted(task)}
-        />
-      </td>
-      <td className="description">{task.description}</td>
-      <td className="due-date">
-        {getHumanFriendlyDateString(task.dueDate)}
-      </td>
-      <td>
-        <button
-          className="delete"
-          title="Delete"
-          onClick={() => {deleteTask(task._id);}}>&times;</button>
-      </td>
-    </tr>
+    <TableRow
+      key={task._id}
+      className={taskClass}
+    >
+      <TableCell component="th" scope="row" padding={'none'}>
+        <Checkbox defaultChecked={task.completed} onChange={() => toggleCompleted(task)} />
+      </TableCell>
+      <TableCell className="description">{task.description}</TableCell>
+      <TableCell className="due-date">{getHumanFriendlyDateString(task.dueDate)}</TableCell>
+      <TableCell>
+        <Button component={Link} to={`/edit/${task._id}`}><EditIcon /></Button>
+        <Button onClick={() => {deleteTask(task._id);}}><DeleteIcon /></Button>
+      </TableCell>
+    </TableRow>
   );
 };
 
 export default function TaskList({ user }) {
   const { API_ENDPOINT, API_KEY } = config.api;
   const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
+  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
 
   // This method fetches the records from the database.
@@ -59,24 +59,24 @@ export default function TaskList({ user }) {
       setTasks(tasks);
     }
 
-    getTasks();
+    getTasks().then(() => setLoading(false));
   }, [tasks.length]);
 
-  async function toggleCompleted(task) {
-    task.completed = !task.completed;
-    await fetch(`${API_ENDPOINT}/task/update/${task._id}`, {
-      method: 'POST',
-      body: JSON.stringify(task),
-      headers: {
-        'Authorization': userToken,
-        'x-api-key': API_KEY,
-      },
-    });
+  async function toggleCompleted(currentTask) {
+    currentTask.completed = !currentTask.completed;
+    // await fetch(`${API_ENDPOINT}/task/update/${currentTask._id}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Authorization': userToken,
+    //     'x-api-key': API_KEY,
+    //   },
+    //   body: JSON.stringify(currentTask),
+    // });
 
     // Update the state, so we can re-render a completed item's styles
     const updatedTasks = tasks.map(existingTask => {
-      if (existingTask._id === task._id){
-        return {...existingTask, completed: task.completed};
+      if (existingTask._id === currentTask._id){
+        return {...existingTask, completed: currentTask.completed};
       }
       return existingTask;
     });
@@ -109,22 +109,19 @@ export default function TaskList({ user }) {
     });
   }
 
-  return (
-    <div>
-      <h1>To-Do List</h1>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Description</th>
-            <th>Due Date</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{taskList()}</tbody>
-      </table>
-      <br />
-      <Link to="/add">+ Add Task</Link>
-    </div>
-  );
+  return loading ? <Loader /> :
+    (
+      <div>
+        <h1>To-Do List</h1>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              {taskList()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <br />
+        <Button component={Link} to="/add" variant="contained" startIcon={<AddIcon />}>Add Task</Button>
+      </div>
+    );
 }
