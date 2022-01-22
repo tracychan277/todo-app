@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { API_ENDPOINT } from '../../util';
+import config from '../../config';
 
-export default function Edit(props) {
-  const userName = props.user.username;
+export default function Edit({ user }) {
+  const { API_ENDPOINT, API_KEY } = config.api;
+  const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
+  const userName = user.username;
   const [form, setForm] = useState({
     description: "",
     dueDate: "",
@@ -17,7 +19,12 @@ export default function Edit(props) {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
-      const response = await fetch(`${API_ENDPOINT}/task/${params.id.toString()}`);
+      const response = await fetch(`${API_ENDPOINT}/task/${params.id.toString()}`, {
+        headers: {
+          'Authorization': userToken,
+          'x-api-key': API_KEY,
+        },
+      });
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -28,7 +35,7 @@ export default function Edit(props) {
       const task = await response.json();
       if (!task) {
         window.alert(`Task with id ${id} not found`);
-        navigate("/");
+        navigate('/');
         return;
       }
 
@@ -36,8 +43,6 @@ export default function Edit(props) {
     }
 
     fetchData();
-
-    return;
   }, [params.id, navigate]);
 
   // These methods will update the state properties.
@@ -52,19 +57,21 @@ export default function Edit(props) {
     const editedTask = {
       description: form.description,
       dueDate: form.dueDate,
-      userName: "tracy",
+      userName: userName,
       completed: form.completed,
     };
 
     await fetch(`${API_ENDPOINT}/task/update/${params.id}`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(editedTask),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': userToken,
+        'x-api-key': API_KEY,
       },
     });
 
-    navigate("/");
+    navigate('/');
   }
 
   return (

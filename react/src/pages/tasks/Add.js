@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { API_ENDPOINT } from '../../util';
+import config from '../../config';
 
-export default function Add(props) {
-  const userName = props.user.username;
+export default function Add({ user }) {
+  const { API_ENDPOINT, API_KEY } = config.api;
+  const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
+  const userName = user.username;
   const [form, setForm] = useState({
     description: "",
     dueDate: "",
@@ -26,15 +28,16 @@ export default function Add(props) {
     const newTask = { ...form };
 
     await fetch(`${API_ENDPOINT}/task/add`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': userToken,
+        'x-api-key': API_KEY,
       },
       body: JSON.stringify(newTask),
     })
     .catch(error => {
       window.alert(error);
-      return;
     });
 
     setForm({
