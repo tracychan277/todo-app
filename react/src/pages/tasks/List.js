@@ -3,20 +3,21 @@ import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
 import config from '../../config';
 import Loader from '../../components/Loader';
-import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
+import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemText, Tooltip } from '@mui/material';
 import CalendarIcon from '@mui/icons-material/Event';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add";
 
 const { API_ENDPOINT, API_KEY } = config.api;
 
 const Task = ({ task, deleteTask, userToken }) => {
 
+  const overdue = Date.parse(task.dueDate) <= new Date();
   const [checked, setChecked] = useState(task.completed);
 
   async function handleToggle(e, task) {
-    // Disable default check/uncheck behaviour so we can set the 'checked' status from the state
+    // Disable default check/uncheck behaviour, so we can set the 'checked' status from the state
     e.preventDefault();
     setChecked(prevChecked => !prevChecked);
     await fetch(`${API_ENDPOINT}/task/update/${task._id}`, {
@@ -33,7 +34,7 @@ const Task = ({ task, deleteTask, userToken }) => {
   let taskClass = null;
   if (checked) {
     taskClass = 'completed';
-  } else if (Date.parse(task.dueDate) <= new Date()) {
+  } else if (overdue) {
     taskClass = 'overdue';
   }
   const labelId = `checkbox-list-label-${task._id}`;
@@ -41,14 +42,14 @@ const Task = ({ task, deleteTask, userToken }) => {
   return (
     <ListItem key={task._id}
               secondaryAction={
-                <IconButton edge="end" aria-label="delete" onClick={() => deleteTask(task._id)}>
+                <IconButton edge="end" aria-label="Delete" onClick={() => deleteTask(task._id)}>
                   <DeleteIcon />
                 </IconButton>
               }
               disablePadding
               className={taskClass}
     >
-      <ListItemButton role={undefined} dense>
+      <ListItemButton role={undefined} onClick={(e) => handleToggle(e, task)} dense>
         <Checkbox
           edge="start"
           checked={checked}
@@ -60,12 +61,12 @@ const Task = ({ task, deleteTask, userToken }) => {
         <ListItemText id={labelId} primary={task.description} className="description" />
         {/*<Tooltip title={getHumanFriendlyDateString(task.dueDate)}>*/}
         {/*  <IconButton>*/}
-        {/*    <CalendarIcon />*/}
+        {/*    <CalendarIcon style={!checked && overdue ? {fill: 'red'} : {}} />*/}
         {/*  </IconButton>*/}
         {/*</Tooltip>*/}
-        <IconButton component={Link} to={`/edit/${task._id}`}>
-          <EditIcon />
-        </IconButton>
+        {/*<IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">*/}
+        {/*  <EditIcon />*/}
+        {/*</IconButton>*/}
       </ListItemButton>
     </ListItem>
   );
