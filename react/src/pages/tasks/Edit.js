@@ -6,6 +6,7 @@ import Loader from '../../components/Loader';
 import { Box, Button, TextField } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DateTimePicker from "../../components/DateTimePicker";
 
 export default function Edit({ user }) {
   const { API_ENDPOINT, API_KEY } = config.api;
@@ -101,13 +102,11 @@ export default function Edit({ user }) {
           />
         </div>
         <div>
-          <TextField required
-                     type="datetime-local"
-                     id="dueDate"
-                     variant="outlined"
-                     size="small"
-                     value={form.dueDate}
-                     onChange={(e) => updateForm({ dueDate: e.target.value })}
+          <DateTimePicker required
+                          id="dueDate"
+                          label="Due Date"
+                          value={form.dueDate}
+                          onChange={(newValue) => updateForm({ dueDate: newValue })}
           />
         </div>
         <Button type="submit" variant="contained" startIcon={<SaveIcon />}>Update</Button>
