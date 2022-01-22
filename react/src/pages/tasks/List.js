@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
 import config from '../../config';
 import Loader from '../../components/Loader';
-import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemText, Tooltip } from '@mui/material';
-import CalendarIcon from '@mui/icons-material/Event';
+import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add";
@@ -49,21 +48,22 @@ const Task = ({ task, deleteTask, userToken }) => {
               disablePadding
               className={taskClass}
     >
-      <ListItemButton role={undefined} onClick={(e) => handleToggle(e, task)} dense>
-        <Checkbox
-          edge="start"
-          checked={checked}
-          tabIndex={-1}
-          disableRipple
-          inputProps={{ 'aria-labelledby': labelId }}
-          onChange={(e) => handleToggle(e, task)}
+      <ListItemButton role={undefined} onClick={(e) => handleToggle(e, task)}>
+        <ListItemIcon>
+          <Checkbox
+            edge="start"
+            checked={checked}
+            tabIndex={-1}
+            disableRipple
+            inputProps={{ 'aria-labelledby': labelId }}
+            onChange={(e) => handleToggle(e, task)}
+          />
+        </ListItemIcon>
+        <ListItemText id={labelId}
+                      primary={task.description}
+                      secondary={getHumanFriendlyDateString(task.dueDate)}
+                      className="description"
         />
-        <ListItemText id={labelId} primary={task.description} className="description" />
-        {/*<Tooltip title={getHumanFriendlyDateString(task.dueDate)}>*/}
-        {/*  <IconButton>*/}
-        {/*    <CalendarIcon style={!checked && overdue ? {fill: 'red'} : {}} />*/}
-        {/*  </IconButton>*/}
-        {/*</Tooltip>*/}
         {/*<IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">*/}
         {/*  <EditIcon />*/}
         {/*</IconButton>*/}

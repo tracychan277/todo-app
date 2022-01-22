@@ -35,6 +35,6 @@ export function getHumanFriendlyDateString(iso8601_date_string) {
   } else if (dateFormatter.format(date) === dateFormatter.format(tomorrow)) {
     return "Tomorrow at " + timeFormatter.format(date);
   } else {
-    return dateFormatter.format(date) + " " + timeFormatter.format(date);
+    return dateFormatter.format(date) + " at " + timeFormatter.format(date);
   }
 }
