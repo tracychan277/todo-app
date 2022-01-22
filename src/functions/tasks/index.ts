@@ -15,7 +15,7 @@ export default {
         method: 'get',
         path: 'tasks',
         authorizer: cognitoAuthorizer,
-        private: true,
+        // private: true,
         cors: true,
       },
     },
@@ -24,7 +24,7 @@ export default {
         method: 'get',
         path: 'task/{id}',
         authorizer: cognitoAuthorizer,
-        private: true,
+        // private: true,
         cors: true,
       }
     },
@@ -33,7 +33,7 @@ export default {
         method: 'post',
         path: 'task/add',
         authorizer: cognitoAuthorizer,
-        private: true,
+        // private: true,
         cors: true,
       }
     },
@@ -42,7 +42,7 @@ export default {
         method: 'post',
         path: 'task/update/{id}',
         authorizer: cognitoAuthorizer,
-        private: true,
+        // private: true,
         cors: true,
       }
     },
@@ -51,7 +51,7 @@ export default {
         method: 'delete',
         path: 'task/delete/{id}',
         authorizer: cognitoAuthorizer,
-        private: true,
+        // private: true,
         cors: true,
       }
     },
