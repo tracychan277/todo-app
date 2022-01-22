@@ -18,6 +18,26 @@ const serverlessConfiguration: AWS = {
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
+      apiKeys: [
+        {
+          free: ['tasks'],
+        },
+      ],
+      usagePlan: [
+        {
+          free: {
+            quota: {
+              limit: 5000,
+              offset: 2,
+              period: 'MONTH',
+            },
+            throttle: {
+              burstLimit: 200,
+              rateLimit: 100,
+            },
+          },
+        }
+      ],
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
