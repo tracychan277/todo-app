@@ -3,10 +3,21 @@ import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
 import config from '../../config';
 import Loader from '../../components/Loader';
-import { Checkbox, IconButton, Fab, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  Checkbox,
+  IconButton,
+  Fab,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add";
+import WarningIcon from '@mui/icons-material/Warning';
 
 const { API_ENDPOINT, API_KEY } = config.api;
 
@@ -63,6 +74,7 @@ const Task = ({ task, deleteTask, userToken }) => {
                       secondary={getHumanFriendlyDateString(task.dueDate)}
                       className="description"
         />
+        {!checked && overdue ? <Tooltip title="This task is overdue"><WarningIcon color="error" /></Tooltip> : null}
         {/*<IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">*/}
         {/*  <EditIcon />*/}
         {/*</IconButton>*/}

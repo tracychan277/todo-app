@@ -6,6 +6,10 @@
   text-decoration: line-through;
 }
 
+.overdue {
+  background-color: #FAEAEA;
+}
+
 .overdue .description {
-  color: red;
+  color: #d32f2f;
 }
