@@ -83,10 +83,12 @@ export default function Add({ user }) {
                           onChange={(newValue) => updateForm({ dueDate: newValue })}
           />
         </div>
-        <Button type="submit" variant="contained" startIcon={<AddIcon />}>Add</Button>
+        <Button type="submit" variant="contained" size="large" startIcon={<AddIcon />}>Add</Button>
       </Box>
       <br />
-      <Button component={Link} to="/" variant="outlined" startIcon={<ArrowBackIcon />}>Back to Tasks List</Button>
+      <Button component={Link} to="/" variant="outlined" size="small" startIcon={<ArrowBackIcon />}>
+        Back to Tasks List
+      </Button>
     </div>
   );
 }

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
 import config from '../../config';
 import Loader from '../../components/Loader';
-import { Button, Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
+import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Tooltip } from '@mui/material';
+import CalendarIcon from '@mui/icons-material/Event';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from "@mui/icons-material/Add";
@@ -35,22 +36,9 @@ const Task = ({ task, deleteTask, userToken }) => {
   } else if (Date.parse(task.dueDate) <= new Date()) {
     taskClass = 'overdue';
   }
+  const labelId = `checkbox-list-label-${task._id}`;
 
   return (
-    // <TableRow
-    //   key={task._id}
-    //   className={taskClass}
-    // >
-    //   <TableCell component="th" scope="row" padding={'none'}>
-    //     <Checkbox defaultChecked={task.completed} onChange={() => toggleCompleted(task)} />
-    //   </TableCell>
-    //   <TableCell className="description">{task.description}</TableCell>
-    //   <TableCell className="due-date">{getHumanFriendlyDateString(task.dueDate)}</TableCell>
-    //   <TableCell>
-    //     <IconButton component={Link} to={`/edit/${task._id}`}><EditIcon /></IconButton>
-    //     <IconButton onClick={() => {deleteTask(task._id);}}><DeleteIcon /></IconButton>
-    //   </TableCell>
-    // </TableRow>
     <ListItem key={task._id}
               secondaryAction={
                 <IconButton edge="end" aria-label="delete" onClick={() => deleteTask(task._id)}>
@@ -60,18 +48,24 @@ const Task = ({ task, deleteTask, userToken }) => {
               disablePadding
               className={taskClass}
     >
-      <ListItemButton role={undefined} onClick={(e) => handleToggle(e, task)} dense>
-        <ListItemIcon>
-          <Checkbox
-            edge="start"
-            checked={checked}
-            tabIndex={-1}
-            disableRipple
-            inputProps={{ 'aria-labelledby': task._id }}
-            onChange={() => handleToggle(task)}
-          />
-        </ListItemIcon>
-        <ListItemText id={task._id} primary={task.description} className="description" />
+      <ListItemButton role={undefined} dense>
+        <Checkbox
+          edge="start"
+          checked={checked}
+          tabIndex={-1}
+          disableRipple
+          inputProps={{ 'aria-labelledby': labelId }}
+          onChange={(e) => handleToggle(e, task)}
+        />
+        <ListItemText id={labelId} primary={task.description} className="description" />
+        {/*<Tooltip title={getHumanFriendlyDateString(task.dueDate)}>*/}
+        {/*  <IconButton>*/}
+        {/*    <CalendarIcon />*/}
+        {/*  </IconButton>*/}
+        {/*</Tooltip>*/}
+        <IconButton component={Link} to={`/edit/${task._id}`}>
+          <EditIcon />
+        </IconButton>
       </ListItemButton>
     </ListItem>
   );
