@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
 import config from '../../config';
 import Loader from '../../components/Loader';
-import { Button, Checkbox, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Checkbox, IconButton, Fab, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add";
@@ -11,7 +11,6 @@ import AddIcon from "@mui/icons-material/Add";
 const { API_ENDPOINT, API_KEY } = config.api;
 
 const Task = ({ task, deleteTask, userToken }) => {
-
   const overdue = Date.parse(task.dueDate) <= new Date();
   const [checked, setChecked] = useState(task.completed);
 
@@ -131,7 +130,7 @@ export default function TaskList({ user }) {
       <div>
         <h1 style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           To-Do List
-          <Button component={Link} to="/add" variant="contained" startIcon={<AddIcon />}>Add Task</Button>
+          <Fab component={Link} to="/add" color="primary" aria-label="Add"><AddIcon /></Fab>
         </h1>
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {taskList()}

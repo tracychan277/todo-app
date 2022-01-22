@@ -6,22 +6,6 @@
   text-decoration: line-through;
 }
 
-.overdue .description, .overdue .due-date {
+.overdue .description {
   color: red;
-}
-
-.delete:hover {
-  cursor: pointer;
-}
-
-table {
-  width: 100%;
-}
-
-th {
-  text-align: left;
-}
-
-label {
-  font-weight: bold;
 }
