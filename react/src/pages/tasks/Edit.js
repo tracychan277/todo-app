@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import config from '../../config';
 import Loader from '../../components/Loader';
 import { Box, Button, TextField } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DateTimePicker from "../../components/DateTimePicker";
+import { fetchFromApi, getTokenForUser } from "../../util";
 
 export default function Edit({ user }) {
-  const { API_ENDPOINT, API_KEY } = config.api;
-  const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
+  const userToken = getTokenForUser(user);
   const userName = user.username;
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
@@ -25,12 +24,7 @@ export default function Edit({ user }) {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
-      const response = await fetch(`${API_ENDPOINT}/task/${params.id.toString()}`, {
-        headers: {
-          'Authorization': userToken,
-          'x-api-key': API_KEY,
-        },
-      });
+      const response = await fetchFromApi(`/task/${params.id.toString()}`, userToken);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -67,14 +61,9 @@ export default function Edit({ user }) {
       completed: form.completed,
     };
 
-    await fetch(`${API_ENDPOINT}/task/update/${params.id}`, {
+    await fetchFromApi(`/task/update/${params.id}`, userToken, {
       method: 'POST',
       body: JSON.stringify(editedTask),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': userToken,
-        'x-api-key': API_KEY,
-      },
     });
 
     navigate('/');

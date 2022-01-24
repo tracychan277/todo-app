@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getHumanFriendlyDateString } from '../../dateUtils';
-import config from '../../config';
 import Loader from '../../components/Loader';
 import {
   Checkbox,
@@ -18,8 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add";
 import WarningIcon from '@mui/icons-material/Warning';
-
-const { API_ENDPOINT, API_KEY } = config.api;
+import { fetchFromApi, getTokenForUser } from "../../util";
 
 const Task = ({ task, deleteTask, userToken }) => {
   const overdue = Date.parse(task.dueDate) <= new Date();
@@ -29,13 +27,8 @@ const Task = ({ task, deleteTask, userToken }) => {
     // Disable default check/uncheck behaviour, so we can set the 'checked' status from the state
     e.preventDefault();
     setChecked(prevChecked => !prevChecked);
-    await fetch(`${API_ENDPOINT}/task/update/${task._id}`, {
+    await fetchFromApi(`/task/update/${task._id}`, userToken, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': userToken,
-        'x-api-key': API_KEY,
-      },
       body: JSON.stringify({...task, completed: !checked}),
     });
   }
@@ -75,28 +68,23 @@ const Task = ({ task, deleteTask, userToken }) => {
                       className="description"
         />
         {!checked && overdue ? <Tooltip title="This task is overdue"><WarningIcon color="error" /></Tooltip> : null}
-        {/*<IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">*/}
-        {/*  <EditIcon />*/}
-        {/*</IconButton>*/}
+        <IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">
+          <EditIcon />
+        </IconButton>
       </ListItemButton>
     </ListItem>
   );
 };
 
 export default function TaskList({ user }) {
-  const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
+  const userToken = getTokenForUser(user);
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
 
   // This method fetches the records from the database.
   useEffect(() => {
     async function getTasks() {
-      const response = await fetch(`${API_ENDPOINT}/tasks/`, {
-        headers: {
-          'Authorization': userToken,
-          'x-api-key': API_KEY,
-        },
-      });
+      const response = await fetchFromApi('/tasks/', userToken);
 
       if (!response.ok) {
         const message = `An error occurred: ${response.status} ${response.statusText}`;
@@ -112,13 +100,7 @@ export default function TaskList({ user }) {
   }, [tasks.length]);
 
   async function deleteTask(id) {
-    await fetch(`${API_ENDPOINT}/task/delete/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': userToken,
-        'x-api-key': API_KEY,
-      },
-    });
+    await fetchFromApi(`/task/delete/${id}`, userToken, {method: 'DELETE'});
 
     const newTasks = tasks.filter((el) => el._id !== id);
     setTasks(newTasks);

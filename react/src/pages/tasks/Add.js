@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import config from '../../config';
 import { Box, Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DateTimePicker from '../../components/DateTimePicker';
+import { fetchFromApi, getTokenForUser } from "../../util";
 
 export default function Add({ user }) {
-  const { API_ENDPOINT, API_KEY } = config.api;
-  const userToken = user.getSignInUserSession().getIdToken().getJwtToken();
+  const userToken = getTokenForUser(user);
   const userName = user.username;
   const [form, setForm] = useState({
     description: "",
@@ -31,13 +30,8 @@ export default function Add({ user }) {
 
     const newTask = { ...form };
 
-    await fetch(`${API_ENDPOINT}/task/add`, {
+    await fetchFromApi('/task/add', userToken, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': userToken,
-        'x-api-key': API_KEY,
-      },
       body: JSON.stringify(newTask),
     })
     .catch(error => {
