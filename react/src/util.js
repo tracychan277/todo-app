@@ -7,7 +7,8 @@ export async function fetchFromApi(urlPath, user, init={}) {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': userToken,
-      'x-api-key': API_KEY,
+      'X-Api-Key': API_KEY,
+      'Username': user.username,
     },
     ...init,
   }

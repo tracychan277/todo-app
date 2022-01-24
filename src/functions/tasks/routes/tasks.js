@@ -17,14 +17,20 @@ function handleError(error, result, response, logMessage=null) {
   response.json(result);
 }
 
+function getUserFromRequest(request) {
+  return request.get('userName');
+}
+
 // Get all the tasks available
 routes.route('/tasks').get(async function(request, response) {
+  const userName = getUserFromRequest(request);
   const client = await clientPromise;
   const dbConnection = client.db();
+  const userQuery = { userName: userName };
   const order = { dueDate: 1 };
   dbConnection
     .collection('tasks')
-    .find({})
+    .find(userQuery)
     .sort(order)
     .toArray((error, result) => handleError(error, result, response));
 });

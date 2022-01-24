@@ -7,6 +7,21 @@ const cognitoAuthorizer = {
   },
 };
 
+// https://www.serverless.com/blog/cors-api-gateway-survival-guide/
+const corsOptions = {
+  origin: '*',
+  headers: [
+    'Content-Type',
+    'X-Amz-Date',
+    'Authorization',
+    'X-Api-Key',
+    'X-Amz-Security-Token',
+    'X-Amz-User-Agent',
+    'Username', // Custom header
+  ],
+  allowCredentials: false,
+};
+
 export default {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
@@ -16,7 +31,7 @@ export default {
         path: 'tasks',
         authorizer: cognitoAuthorizer,
         private: true,
-        cors: true,
+        cors: corsOptions,
       },
     },
     {
@@ -25,7 +40,7 @@ export default {
         path: 'task/{id}',
         authorizer: cognitoAuthorizer,
         private: true,
-        cors: true,
+        cors: corsOptions,
       }
     },
     {
@@ -34,7 +49,7 @@ export default {
         path: 'task/add',
         authorizer: cognitoAuthorizer,
         private: true,
-        cors: true,
+        cors: corsOptions,
       }
     },
     {
@@ -43,7 +58,7 @@ export default {
         path: 'task/update/{id}',
         authorizer: cognitoAuthorizer,
         private: true,
-        cors: true,
+        cors: corsOptions,
       }
     },
     {
@@ -52,7 +67,7 @@ export default {
         path: 'task/delete/{id}',
         authorizer: cognitoAuthorizer,
         private: true,
-        cors: true,
+        cors: corsOptions,
       }
     },
   ]
