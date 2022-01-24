@@ -17,9 +17,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Close';
 import AddIcon from "@mui/icons-material/Add";
 import WarningIcon from '@mui/icons-material/Warning';
-import { fetchFromApi, getTokenForUser } from "../../util";
+import { fetchFromApi } from "../../util";
 
-const Task = ({ task, deleteTask, userToken }) => {
+const Task = ({ task, deleteTask, user }) => {
   const overdue = Date.parse(task.dueDate) <= new Date();
   const [checked, setChecked] = useState(task.completed);
 
@@ -27,7 +27,7 @@ const Task = ({ task, deleteTask, userToken }) => {
     // Disable default check/uncheck behaviour, so we can set the 'checked' status from the state
     e.preventDefault();
     setChecked(prevChecked => !prevChecked);
-    await fetchFromApi(`/task/update/${task._id}`, userToken, {
+    await fetchFromApi(`/task/update/${task._id}`, user, {
       method: 'POST',
       body: JSON.stringify({...task, completed: !checked}),
     });
@@ -77,14 +77,13 @@ const Task = ({ task, deleteTask, userToken }) => {
 };
 
 export default function TaskList({ user }) {
-  const userToken = getTokenForUser(user);
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
 
   // This method fetches the records from the database.
   useEffect(() => {
     async function getTasks() {
-      const response = await fetchFromApi('/tasks/', userToken);
+      const response = await fetchFromApi('/tasks/', user);
 
       if (!response.ok) {
         const message = `An error occurred: ${response.status} ${response.statusText}`;
@@ -100,7 +99,7 @@ export default function TaskList({ user }) {
   }, [tasks.length]);
 
   async function deleteTask(id) {
-    await fetchFromApi(`/task/delete/${id}`, userToken, {method: 'DELETE'});
+    await fetchFromApi(`/task/delete/${id}`, user, {method: 'DELETE'});
 
     const newTasks = tasks.filter((el) => el._id !== id);
     setTasks(newTasks);
@@ -113,7 +112,7 @@ export default function TaskList({ user }) {
           task={task}
           deleteTask={() => deleteTask(task._id)}
           key={task._id}
-          userToken={userToken}
+          user={user}
         />
       );
     });

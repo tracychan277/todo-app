@@ -6,10 +6,9 @@ import { Box, Button, TextField } from "@mui/material";
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DateTimePicker from "../../components/DateTimePicker";
-import { fetchFromApi, getTokenForUser } from "../../util";
+import { fetchFromApi } from "../../util";
 
 export default function Edit({ user }) {
-  const userToken = getTokenForUser(user);
   const userName = user.username;
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
@@ -24,7 +23,7 @@ export default function Edit({ user }) {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
-      const response = await fetchFromApi(`/task/${params.id.toString()}`, userToken);
+      const response = await fetchFromApi(`/task/${params.id.toString()}`, user);
 
       if (!response.ok) {
         const message = `An error has occurred: ${response.statusText}`;
@@ -61,7 +60,7 @@ export default function Edit({ user }) {
       completed: form.completed,
     };
 
-    await fetchFromApi(`/task/update/${params.id}`, userToken, {
+    await fetchFromApi(`/task/update/${params.id}`, user, {
       method: 'POST',
       body: JSON.stringify(editedTask),
     });

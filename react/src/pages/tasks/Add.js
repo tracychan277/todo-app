@@ -5,10 +5,9 @@ import { Box, Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DateTimePicker from '../../components/DateTimePicker';
-import { fetchFromApi, getTokenForUser } from "../../util";
+import { fetchFromApi } from "../../util";
 
 export default function Add({ user }) {
-  const userToken = getTokenForUser(user);
   const userName = user.username;
   const [form, setForm] = useState({
     description: "",
@@ -30,7 +29,7 @@ export default function Add({ user }) {
 
     const newTask = { ...form };
 
-    await fetchFromApi('/task/add', userToken, {
+    await fetchFromApi('/task/add', user, {
       method: 'POST',
       body: JSON.stringify(newTask),
     })

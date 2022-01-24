@@ -1,7 +1,8 @@
 import config from "./config";
 
-export async function fetchFromApi(urlPath, userToken, init={}) {
+export async function fetchFromApi(urlPath, user, init={}) {
   const { API_ENDPOINT, API_KEY } = config.api;
+  const userToken = getTokenForUser(user);
   const requestData = {
     headers: {
       'Content-Type': 'application/json',
