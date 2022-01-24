@@ -135,6 +135,10 @@ const serverlessConfiguration: AWS = {
           MfaConfiguration: 'OFF',
           UserPoolName: 'todo-user-pool',
           UsernameAttributes: ['email'],
+          AutoVerifiedAttributes: ['email'],
+          EmailConfiguration: {
+            EmailSendingAccount: 'COGNITO_DEFAULT'
+          },
           Policies: {
             PasswordPolicy: {
               MinimumLength: 6,
