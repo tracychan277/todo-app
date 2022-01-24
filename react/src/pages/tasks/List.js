@@ -68,9 +68,9 @@ const Task = ({ task, deleteTask, user }) => {
                       className="description"
         />
         {!checked && overdue ? <Tooltip title="This task is overdue"><WarningIcon color="error" /></Tooltip> : null}
-        <IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">
-          <EditIcon />
-        </IconButton>
+        {/*<IconButton component={Link} to={`/edit/${task._id}`} aria-label="Edit">*/}
+        {/*  <EditIcon />*/}
+        {/*</IconButton>*/}
       </ListItemButton>
     </ListItem>
   );
