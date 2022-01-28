@@ -47,7 +47,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { tasks },
+  functions: tasks,
   resources: {
     Resources: {
       S3Bucket: {

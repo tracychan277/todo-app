@@ -22,53 +22,76 @@ const corsOptions = {
   allowCredentials: false,
 };
 
+// https://levelup.gitconnected.com/creating-a-simple-serverless-application-using-typescript-and-aws-part-1-be2188f5ff93
 export default {
-  handler: `${handlerPath(__dirname)}/handler.main`,
-  events: [
-    {
-      http: {
-        method: 'get',
-        path: 'tasks',
-        authorizer: cognitoAuthorizer,
-        private: true,
-        cors: corsOptions,
+  addTask: {
+    handler: `${handlerPath(__dirname)}/handler.addTask`,
+    events: [
+      {
+        http: {
+          method: 'POST',
+          path: 'task/add',
+          authorizer: cognitoAuthorizer,
+          private: true,
+          cors: corsOptions,
+        }
+      }
+    ]
+  },
+  deleteTask: {
+    handler: `${handlerPath(__dirname)}/handler.deleteTask`,
+    events: [
+      {
+        http: {
+          method: 'delete',
+          path: 'task/delete/{id}',
+          authorizer: cognitoAuthorizer,
+          private: true,
+          cors: corsOptions,
+        }
       },
-    },
-    {
-      http: {
-        method: 'get',
-        path: 'task/{id}',
-        authorizer: cognitoAuthorizer,
-        private: true,
-        cors: corsOptions,
-      }
-    },
-    {
-      http: {
-        method: 'post',
-        path: 'task/add',
-        authorizer: cognitoAuthorizer,
-        private: true,
-        cors: corsOptions,
-      }
-    },
-    {
-      http: {
-        method: 'post',
-        path: 'task/update/{id}',
-        authorizer: cognitoAuthorizer,
-        private: true,
-        cors: corsOptions,
-      }
-    },
-    {
-      http: {
-        method: 'delete',
-        path: 'task/delete/{id}',
-        authorizer: cognitoAuthorizer,
-        private: true,
-        cors: corsOptions,
-      }
-    },
-  ]
+    ]
+  },
+  updateTask: {
+    handler: `${handlerPath(__dirname)}/handler.updateTask`,
+    events: [
+      {
+        http: {
+          method: 'post',
+          path: 'task/update/{id}',
+          authorizer: cognitoAuthorizer,
+          private: true,
+          cors: corsOptions,
+        }
+      },
+    ]
+  },
+  listTasks: {
+    handler: `${handlerPath(__dirname)}/handler.listTasks`,
+    events: [
+      {
+        http: {
+          method: 'get',
+          path: 'tasks',
+          authorizer: cognitoAuthorizer,
+          private: true,
+          cors: corsOptions,
+        },
+      },
+    ]
+  },
+  getTask: {
+    handler: `${handlerPath(__dirname)}/handler.getTask`,
+    events: [
+      {
+        http: {
+          method: 'get',
+          path: 'task/{id}',
+          authorizer: cognitoAuthorizer,
+          private: true,
+          cors: corsOptions,
+        }
+      },
+    ]
+  }
 }
