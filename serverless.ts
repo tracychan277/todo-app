@@ -8,6 +8,7 @@ const serverlessConfiguration: AWS = {
   plugins: [
     'serverless-esbuild',
     'serverless-dotenv-plugin',
+    'serverless-offline',
     'serverless-single-page-app-plugin',
   ],
   provider: {
@@ -210,6 +211,12 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    ['serverless-offline']: {
+      httpPort: 5000,
+      babelOptions: {
+        presets: ['env']
+      }
+    }
   },
 };
 
